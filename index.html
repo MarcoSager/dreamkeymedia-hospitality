@@ -58,6 +58,11 @@ fbq('track', 'PageView');
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .reveal { opacity: 0; }
   .reveal.is-visible { opacity: 1; }
+  input:-webkit-autofill {
+    -webkit-text-fill-color: #fff;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: 0 0 0px 1000px transparent inset;
+  }
 </style>
 </head>
 <body class="min-h-screen bg-primary text-white overflow-x-hidden">
@@ -592,18 +597,32 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
     backBtn.addEventListener('click', collapse);
   })();
 
-  // Form submit -> mailto
+  // Form submit -> WhatsApp (primary) + Formspree email copy (once endpoint is set)
+  const FORMSPREE_ENDPOINT = ''; // paste your Formspree form URL here, e.g. 'https://formspree.io/f/xxxxxxx'
   document.getElementById('apply-form').addEventListener('submit', function (e) {
     e.preventDefault();
-    const fd = new FormData(e.target);
-    const body =
+    const form = e.target;
+    const fd = new FormData(form);
+    const summary =
+      'New Apply Today lead:\n' +
       'Name: ' + fd.get('name') +
-      '\nPhone: ' + fd.get('phone') +
+      '\nBusiness: ' + fd.get('business') +
       '\nEmail: ' + fd.get('email') +
-      '\nBusiness Name: ' + fd.get('business') +
+      '\nPhone: ' + fd.get('phone') +
       '\nInterested In: ' + (fd.get('interest') || '') +
       '\nWhen To Start: ' + (fd.get('start') || '');
-    window.location.href = 'mailto:info@dreamkeymedia.net?subject=Growth Systems for Hospitality Brands Application&body=' + encodeURIComponent(body);
+
+    window.open('https://wa.me/66970752722?text=' + encodeURIComponent(summary), '_blank');
+
+    if (FORMSPREE_ENDPOINT) {
+      fetch(FORMSPREE_ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: fd }).catch(() => {});
+    }
+
+    form.innerHTML =
+      '<div class="text-center py-10">' +
+      '<h3 class="text-2xl font-black uppercase text-white mb-3">Thanks, ' + (fd.get('name') || '') + '!</h3>' +
+      '<p class="text-[#8A99BB] text-sm">We just opened WhatsApp with your details. Hit send there and we\'ll reply within 24 hours.</p>' +
+      '</div>';
   });
 </script>
 
