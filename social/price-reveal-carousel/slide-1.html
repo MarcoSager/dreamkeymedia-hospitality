@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{gold:'#F5B942',primary:'#263056'}}}}</script>
+<style>
+  html,body{margin:0;padding:0;width:1080px;height:1350px;overflow:hidden;background:#263056;font-family:Inter,system-ui,sans-serif;}
+  .dot{width:8px;height:8px;border-radius:50%;}
+</style></head>
+<body class="relative text-white">
+  <div class="absolute inset-0 bg-gradient-to-br from-[#263056] via-[#1d2545] to-[#0d1424]"></div>
+  <div class="relative z-10 h-full flex flex-col items-center justify-center px-20 text-center">
+    <div class="flex items-center gap-3 mb-10">
+      <img src="../../images/logo.png" width="56" height="56" class="object-contain" />
+      <div class="text-left">
+        <div class="font-black text-lg tracking-[0.2em] uppercase leading-none">DREAMKEY</div>
+        <div class="text-gold text-sm tracking-[0.3em] uppercase">MEDIA</div>
+      </div>
+    </div>
+    <p class="text-gold font-bold text-2xl uppercase tracking-widest mb-6">Everything Included For</p>
+    <p class="text-gold font-black text-[120px] leading-none mb-2">39,900</p>
+    <p class="text-white font-black text-4xl uppercase tracking-widest mb-16">THB / Month</p>
+    <p class="text-white/60 text-2xl max-w-xl leading-relaxed">No add-ons hidden in fine print. Swipe to see exactly what's included.</p>
+  </div>
+  <div class="absolute bottom-14 left-1/2 -translate-x-1/2 flex gap-2">
+    <div class="dot bg-gold"></div><div class="dot bg-white/25"></div><div class="dot bg-white/25"></div><div class="dot bg-white/25"></div><div class="dot bg-white/25"></div><div class="dot bg-white/25"></div><div class="dot bg-white/25"></div>
+  </div>
+</body></html>
