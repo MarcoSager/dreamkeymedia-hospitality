@@ -47,9 +47,9 @@ fbq('track', 'PageView');
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes popIn { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }
   @keyframes ctaPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(245,185,66,0.35); } 50% { box-shadow: 0 0 0 12px rgba(245,185,66,0); } }
-  .anim-fade-up { animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both; }
-  .anim-fade-in { animation: fadeIn 0.7s cubic-bezier(0.22,1,0.36,1) both; }
-  .anim-pop-in { animation: popIn 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+  .is-visible.anim-fade-up { animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+  .is-visible.anim-fade-in { animation: fadeIn 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+  .is-visible.anim-pop-in { animation: popIn 0.5s cubic-bezier(0.22,1,0.36,1) both; }
   .anim-cta-pulse { animation: ctaPulse 2.4s ease-in-out infinite; }
   @media (prefers-reduced-motion: reduce) {
     .anim-fade-up, .anim-fade-in, .anim-pop-in, .anim-cta-pulse { animation: none !important; opacity: 1 !important; transform: none !important; }
@@ -75,10 +75,10 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
   <section class="relative min-h-screen flex items-center overflow-hidden bg-[#263056]">
     <div class="absolute inset-0 bg-gradient-to-t from-[#263056] via-transparent to-[#263056]/60 pointer-events-none z-10"></div>
 
-    <div class="relative z-20 w-full max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col lg:flex-row items-start gap-8 lg:gap-8">
+    <div class="relative z-20 w-full max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
 
       <!-- LEFT -->
-      <div id="hero-left" class="flex flex-col items-start transition-all duration-500 ease-in-out overflow-hidden w-full lg:w-[42%] lg:pl-4 opacity-100">
+      <div id="hero-left" class="flex flex-col items-start w-full lg:w-1/2 lg:pl-4">
         <div class="reveal anim-fade-up flex items-center gap-3 mb-8 whitespace-nowrap" style="animation-delay:0ms">
           <img src="images/logo.png" alt="Dreamkey Media" width="44" height="44" class="w-11 h-11 object-contain" />
           <div>
@@ -111,7 +111,16 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
         </div>
 
         <div>
-          <p class="reveal anim-fade-up text-[#F5B942] font-black text-2xl mt-8 mb-8 whitespace-nowrap" style="animation-delay:600ms">39,900 THB / Month</p>
+          <div class="reveal anim-fade-up flex flex-nowrap items-center gap-3 mt-8 mb-8 overflow-x-auto" style="animation-delay:600ms">
+            <p class="text-[#F5B942] font-black text-2xl whitespace-nowrap">39,900 THB / Month</p>
+            <a href="#apply" class="anim-cta-pulse inline-flex items-center justify-center gap-1.5 bg-gold hover:bg-gold/85 text-primary font-black uppercase text-xs tracking-widest px-4 py-2 rounded-lg transition-[background-color,transform] duration-200 hover:scale-[1.01] shadow-xl whitespace-nowrap">
+              Apply Today
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+            <a href="https://calendly.com/dreamkeymedia/growth-system" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1.5 bg-white/10 hover:bg-white/20 text-white font-black uppercase text-xs tracking-widest px-4 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap">
+              Book a Call
+            </a>
+          </div>
           <div class="reveal anim-fade-up flex flex-wrap gap-5" style="animation-delay:700ms">
             <div class="flex items-center gap-2 text-[#8A99BB] text-xs whitespace-nowrap">
               <svg class="w-3.5 h-3.5 text-[#F5B942]/60" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -129,17 +138,32 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
         </div>
       </div>
 
-      <!-- RIGHT — apply form -->
-      <div id="hero-form" class="reveal anim-fade-in bg-primary rounded-2xl border border-white/10 transition-all duration-500 ease-in-out w-full lg:w-[58%] p-6 md:p-8" style="animation-delay:300ms">
-        <button id="back-btn" type="button" class="hidden items-center gap-2 text-white/40 hover:text-white text-xs uppercase tracking-widest mb-6 transition-colors lg:flex">← Back</button>
+      <!-- RIGHT — showcase reel -->
+      <div class="reveal anim-fade-in w-full lg:w-1/2 flex justify-center" style="animation-delay:300ms">
+        <div class="relative w-full max-w-xs aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+          <video class="w-full h-full object-cover" autoplay muted loop playsinline poster="media/hero-reel-poster.jpg">
+            <source src="media/hero-reel.mp4" type="video/mp4" />
+          </video>
+          <div class="absolute top-3 right-3 inline-flex items-center gap-1.5 bg-black/50 backdrop-blur text-white/90 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full">
+            <span class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></span>
+            Our Work
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- ── APPLY ────────────────────────────────────── -->
+  <section id="apply" class="py-20 bg-white/[0.03] border-t border-white/10">
+    <div class="max-w-2xl mx-auto px-6">
+      <div class="reveal anim-fade-in bg-primary rounded-2xl border border-white/10 p-6 md:p-10">
         <h3 class="text-2xl font-black uppercase text-white mb-1">Apply Today</h3>
         <p class="text-[#8A99BB] text-sm mb-6">We'll review your brand and get back to you within 24 hours. No commitment.</p>
 
         <form id="apply-form" class="space-y-6">
           <div>
             <p class="text-gold font-semibold mb-3 text-sm">I'm Interested In *</p>
-            <div id="interest-grid" class="grid gap-3 grid-cols-1 transition-all duration-500">
+            <div class="grid gap-3 grid-cols-2">
               <label class="flex items-center gap-3 cursor-pointer group">
                 <input type="radio" name="interest" required value="Growth Systems for Hospitality Brands" class="peer sr-only" />
                 <div class="w-5 h-5 rounded-full border-2 border-white/30 flex-shrink-0 flex items-center justify-center transition-all duration-200 cursor-pointer peer-checked:bg-gold peer-checked:border-gold group-hover:border-gold/60 peer-focus-visible:ring-2 peer-focus-visible:ring-gold peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-primary">
@@ -160,7 +184,7 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
           <div>
             <p class="text-gold font-semibold mb-3 text-sm">Tell Us About Yourself</p>
             <div class="space-y-4">
-              <div id="name-business-grid" class="grid gap-4 grid-cols-1 transition-all duration-500">
+              <div class="grid gap-4 grid-cols-2">
                 <div>
                   <label for="vp-name" class="text-white/60 text-xs uppercase tracking-widest block mb-1">Name *</label>
                   <input id="vp-name" name="name" required autocomplete="name" placeholder="John Doe" class="w-full bg-transparent border-b border-white/20 focus:border-gold outline-none text-white placeholder-white/30 py-2 text-sm transition-colors" />
@@ -239,7 +263,7 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
         <!-- 5 videos -->
-        <div class="reveal anim-fade-up bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/20 hover:-translate-y-1 transition-[border-color,transform] duration-300">
+        <div class="reveal anim-fade-up bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/20 hover:-translate-y-1 transition-[border-color,transform] duration-300" style="animation-delay:0ms">
           <div class="relative">
             <div class="grid gap-0.5 grid-cols-5">
               <div class="aspect-square"><img src="https://i.ytimg.com/vi/1w6NuvsW4X4/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" /></div>
@@ -266,7 +290,7 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
         </div>
 
         <!-- menu shoot -->
-        <div class="reveal anim-fade-up bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/20 hover:-translate-y-1 transition-[border-color,transform] duration-300">
+        <div class="reveal anim-fade-up bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/20 hover:-translate-y-1 transition-[border-color,transform] duration-300" style="animation-delay:90ms">
           <div class="relative aspect-[16/9] bg-[#0d1424]">
             <img src="images/menu-shoot.jpg" alt="30 High Quality Images for Social Media" loading="lazy" class="w-full h-full object-contain" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#1a2444] via-[#1a2444]/10 to-transparent"></div>
@@ -288,7 +312,7 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
         </div>
 
         <!-- landing page mockup -->
-        <div class="reveal anim-fade-up bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/20 hover:-translate-y-1 transition-[border-color,transform] duration-300">
+        <div class="reveal anim-fade-up bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/20 hover:-translate-y-1 transition-[border-color,transform] duration-300" style="animation-delay:180ms">
           <div class="relative bg-[#0d1424] p-4 pb-6">
             <div class="rounded-md overflow-hidden bg-black aspect-[16/10]">
               <img src="images/landing-mockup.png" alt="Landing Page Optimisation" loading="lazy" class="w-full h-full object-cover object-top" />
@@ -311,7 +335,7 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
         </div>
 
         <!-- automation diagram -->
-        <div class="reveal anim-fade-up bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/20 hover:-translate-y-1 transition-[border-color,transform] duration-300">
+        <div class="reveal anim-fade-up bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/20 hover:-translate-y-1 transition-[border-color,transform] duration-300" style="animation-delay:270ms">
           <div class="relative aspect-[16/9]">
             <img src="images/automation-diagram.png" alt="AI Automation & Follow Up" loading="lazy" class="w-full h-full object-cover" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#1a2444] via-[#1a2444]/10 to-transparent"></div>
@@ -332,7 +356,7 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
         </div>
 
         <!-- content strategy, full width -->
-        <div class="reveal anim-fade-up bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/20 hover:-translate-y-1 transition-[border-color,transform] duration-300 md:col-span-2">
+        <div class="reveal anim-fade-up bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-gold/20 hover:-translate-y-1 transition-[border-color,transform] duration-300 md:col-span-2" style="animation-delay:360ms">
           <div class="relative">
             <div class="grid gap-0.5 grid-cols-3">
               <div class="aspect-square"><img src="https://i.ytimg.com/vi/BrtMuYhWMCY/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" /></div>
@@ -563,39 +587,6 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
       }
     }, { threshold: 0.5 });
     obs.observe(priceEl);
-  })();
-
-  // Hover-expand form, same effect as the homepage Contact section
-  (function () {
-    const form = document.getElementById('hero-form');
-    const left = document.getElementById('hero-left');
-    const backBtn = document.getElementById('back-btn');
-    const interestGrid = document.getElementById('interest-grid');
-    const nameBizGrid = document.getElementById('name-business-grid');
-
-    function expand() {
-      left.classList.add('lg:w-0', 'lg:opacity-0', 'lg:px-0');
-      left.classList.remove('lg:w-[42%]');
-      form.classList.add('w-full', 'p-8', 'lg:p-12');
-      form.classList.remove('lg:w-[58%]', 'p-6', 'md:p-8');
-      backBtn.classList.remove('hidden');
-      interestGrid.classList.add('sm:grid-cols-2');
-      nameBizGrid.classList.add('grid-cols-2');
-      nameBizGrid.classList.remove('grid-cols-1');
-    }
-    function collapse() {
-      left.classList.remove('lg:w-0', 'lg:opacity-0', 'lg:px-0');
-      left.classList.add('lg:w-[42%]');
-      form.classList.remove('w-full', 'p-8', 'lg:p-12');
-      form.classList.add('lg:w-[58%]', 'p-6', 'md:p-8');
-      backBtn.classList.add('hidden');
-      interestGrid.classList.remove('sm:grid-cols-2');
-      nameBizGrid.classList.remove('grid-cols-2');
-      nameBizGrid.classList.add('grid-cols-1');
-    }
-    form.addEventListener('mouseenter', expand);
-    form.addEventListener('mouseleave', collapse);
-    backBtn.addEventListener('click', collapse);
   })();
 
   // Form submit -> WhatsApp (primary) + Formspree email copy (once endpoint is set)
