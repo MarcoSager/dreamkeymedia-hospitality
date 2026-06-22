@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{gold:'#F5B942',primary:'#263056'}}}}</script>
+<style>
+  html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden;background:#263056;font-family:Inter,system-ui,sans-serif;}
+</style>
+</head>
+<body class="relative text-white">
+  <div class="absolute inset-0 bg-gradient-to-b from-[#263056] via-[#1d2545] to-[#0d1424]"></div>
+
+  <!-- top safe zone reserved for IG/FB story link sticker -->
+  <div class="absolute top-0 left-0 right-0 h-[220px]"></div>
+
+  <div class="relative z-10 h-full flex flex-col px-16 pt-[260px] pb-[320px]">
+
+    <div class="flex items-center gap-3 mb-10">
+      <img src="../images/logo.png" width="52" height="52" class="object-contain" />
+      <div>
+        <div class="font-black text-base tracking-[0.2em] uppercase leading-none">DREAMKEY</div>
+        <div class="text-gold text-sm tracking-[0.3em] uppercase">MEDIA</div>
+      </div>
+    </div>
+
+    <h1 class="font-black text-6xl uppercase leading-[0.95] mb-6">
+      <span class="block">MOST VENUES</span>
+      <span class="block">DON'T NEED</span>
+      <span class="block">MORE ADS.</span>
+      <span class="block text-gold">THEY NEED BETTER<br/>SYSTEMS.</span>
+    </h1>
+
+    <div class="flex items-center gap-4 mb-10">
+      <img src="../images/marco.jpg" class="w-20 h-20 rounded-full object-cover object-top border-3 border-gold/50" style="border-width:3px;" />
+      <div>
+        <div class="font-bold text-xl leading-tight">Marco Sager</div>
+        <div class="text-white/60 text-base">25+ yrs hospitality &amp; nightlife • Thailand</div>
+      </div>
+    </div>
+
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-8 mb-10">
+      <p class="text-gold font-bold text-sm uppercase tracking-widest mb-5">Everything Included</p>
+      <ul class="space-y-4 text-xl font-semibold">
+        <li class="flex items-center gap-3"><span class="text-gold text-2xl">✓</span>5 High Quality Videos / Month</li>
+        <li class="flex items-center gap-3"><span class="text-gold text-2xl">✓</span>30 High Quality Images / Month</li>
+        <li class="flex items-center gap-3"><span class="text-gold text-2xl">✓</span>Landing Page Optimisation</li>
+        <li class="flex items-center gap-3"><span class="text-gold text-2xl">✓</span>AI Automation &amp; Follow Up</li>
+        <li class="flex items-center gap-3"><span class="text-gold text-2xl">✓</span>Content Strategy</li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="text-white/50 text-base uppercase tracking-widest mb-1">Starting at</p>
+      <p class="text-gold font-black text-6xl leading-none">39,900</p>
+      <p class="text-white font-bold text-2xl uppercase tracking-widest">THB / Month</p>
+    </div>
+
+  </div>
+
+  <!-- bottom safe zone reserved for IG/FB story link sticker / swipe-up area -->
+  <div class="absolute bottom-0 left-0 right-0 h-[260px] flex items-center justify-center">
+    <div class="inline-flex items-center gap-2 bg-gold text-primary font-black uppercase text-2xl tracking-widest px-12 py-6 rounded-2xl">
+      Book A Strategy Call
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+    </div>
+  </div>
+</body></html>
