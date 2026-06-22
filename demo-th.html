@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow-x: hidden; max-width: 100%;">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Growth Systems for Hospitality Brands: 39,900 THB/Month | Dreamkey Media</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { colors: { gold: '#F5B942', primary: '#263056' } } } };
+</script>
+<style>
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes popIn { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }
+  @keyframes ctaPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(245,185,66,0.35); } 50% { box-shadow: 0 0 0 12px rgba(245,185,66,0); } }
+  .is-visible.anim-fade-up { animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+  .is-visible.anim-fade-in { animation: fadeIn 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+  .is-visible.anim-pop-in { animation: popIn 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+  .anim-cta-pulse { animation: ctaPulse 2.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .anim-fade-up, .anim-fade-in, .anim-pop-in, .anim-cta-pulse { animation: none !important; opacity: 1 !important; transform: none !important; } }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .reveal { opacity: 0; }
+  .reveal.is-visible { opacity: 1; }
+  html[lang="th"] body { font-family: 'Noto Sans Thai', sans-serif; }
+  .lang-toggle { display: inline-flex; background: rgba(255,255,255,0.08); border-radius: 9999px; padding: 3px; }
+  .lang-toggle button { padding: 5px 14px; border-radius: 9999px; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); transition: all 0.2s; }
+  .lang-toggle button.active { background: #F5B942; color: #263056; }
+</style>
+</head>
+<body class="min-h-screen bg-primary text-white overflow-x-hidden">
+
+  <!-- ── LANG TOGGLE (floating) ──────────────────── -->
+  <div class="fixed top-4 right-4 z-50 lang-toggle">
+    <button id="lang-en" class="active" onclick="setLang('en')">EN</button>
+    <button id="lang-th" onclick="setLang('th')">TH</button>
+  </div>
+
+  <!-- ── HERO ─────────────────────────────────────── -->
+  <section class="relative overflow-hidden bg-[#263056]">
+    <div class="absolute inset-0 bg-gradient-to-t from-[#263056] via-transparent to-[#263056]/60 pointer-events-none z-10"></div>
+    <div class="relative z-20 w-full max-w-7xl mx-auto px-6 pt-10 pb-16 md:pt-14 md:pb-20 flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+      <div id="hero-left" class="flex flex-col items-start w-full lg:w-1/2 lg:pl-4">
+        <div class="flex items-center gap-3 mb-8 whitespace-nowrap">
+          <img src="images/logo.png" alt="Dreamkey Media" width="44" height="44" class="w-11 h-11 object-contain" />
+          <div>
+            <div class="text-white font-black text-sm tracking-[0.2em] uppercase leading-none">DREAMKEY</div>
+            <div class="text-[#F5B942] text-xs tracking-[0.3em] uppercase">MEDIA</div>
+          </div>
+        </div>
+
+        <div class="inline-flex items-center gap-2 bg-[#F5B942]/10 border border-[#F5B942]/30 rounded-full px-4 py-1.5 mb-6 whitespace-nowrap">
+          <svg class="w-3 h-3 text-[#F5B942] fill-[#F5B942]" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.771l-7.416 3.642 1.48-8.279-6.064-5.828 8.332-1.151z"/></svg>
+          <span class="text-[#F5B942] text-xs font-bold uppercase tracking-widest i18n" data-en="Growth Systems for Hospitality Brands" data-th="ระบบเติบโตสำหรับธุรกิจโรงแรมและร้านอาหาร">Growth Systems for Hospitality Brands</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-black uppercase leading-[0.95] mb-5">
+          <span class="block i18n" data-en="MOST VENUES DON'T" data-th="ร้านส่วนใหญ่ไม่ได้">MOST VENUES DON'T</span>
+          <span class="block i18n" data-en="NEED MORE ADS." data-th="ต้องการโฆษณาเพิ่ม">NEED MORE ADS.</span>
+          <span class="block text-[#F5B942] i18n" data-en="THEY NEED BETTER SYSTEMS." data-th="พวกเขาต้องการระบบที่ดีกว่า">THEY NEED BETTER SYSTEMS.</span>
+        </h1>
+
+        <p class="text-[#F5B942] font-bold text-sm uppercase tracking-widest mb-3 i18n" data-en="Built by hospitality insiders." data-th="สร้างโดยคนที่อยู่ในธุรกิจนี้จริง">Built by hospitality insiders.</p>
+        <p class="text-[#8A99BB] text-base md:text-lg max-w-md mb-0 leading-relaxed i18n" data-en="Dreamkey Media combines content, marketing, and automation into one growth system designed to attract more guests and create repeat business." data-th="Dreamkey Media รวมคอนเทนต์ การตลาด และระบบอัตโนมัติไว้ในระบบเดียว ออกแบบมาเพื่อดึงลูกค้าใหม่และสร้างลูกค้าประจำ">Dreamkey Media combines content, marketing, and automation into one growth system designed to attract more guests and create repeat business.</p>
+
+        <div class="flex items-center gap-3 mt-6">
+          <img src="images/marco.jpg" alt="Marco Sager" class="w-11 h-11 rounded-full object-cover object-top border-2 border-[#F5B942]/50" />
+          <div>
+            <div class="text-white text-sm font-bold leading-tight">Marco Sager</div>
+            <div class="text-[#8A99BB] text-xs i18n" data-en="25+ yrs hospitality &amp; nightlife • Thailand" data-th="ประสบการณ์ธุรกิจโรงแรมและไนท์ไลฟ์กว่า 25 ปี • ประเทศไทย">25+ yrs hospitality &amp; nightlife • Thailand</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 mt-8 mb-8">
+          <a href="https://calendly.com/dreamkeymedia/growth-system" target="_blank" rel="noopener noreferrer" class="anim-cta-pulse inline-flex items-center justify-center gap-1.5 bg-gold hover:bg-gold/85 text-primary font-black uppercase text-xs tracking-widest px-4 py-2 rounded-lg transition-[background-color,transform] duration-200 hover:scale-[1.01] shadow-xl whitespace-nowrap">
+            <span class="i18n" data-en="Book A Strategy Call" data-th="นัดคุยกลยุทธ์">Book A Strategy Call</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+          <a href="#included" class="inline-flex items-center justify-center gap-1.5 bg-white/10 hover:bg-white/20 text-white font-black uppercase text-xs tracking-widest px-4 py-2 rounded-lg transition-colors duration-200 whitespace-nowrap i18n" data-en="View Our System" data-th="ดูระบบของเรา">View Our System</a>
+        </div>
+      </div>
+
+      <div class="w-full lg:w-1/2 flex justify-center">
+        <div class="relative w-full max-w-xs aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+          <video id="hero-video" class="w-full h-full object-cover" muted loop playsinline preload="none" poster="media/hero-reel-poster.jpg">
+            <source data-src="media/hero-reel.mp4" type="video/mp4" />
+          </video>
+          <div class="absolute top-3 left-3 right-3 flex items-start gap-2 bg-black/50 backdrop-blur text-white/90 text-xs font-semibold leading-snug px-3 py-2 rounded-xl">
+            <span class="w-1.5 h-1.5 rounded-full bg-gold mt-1 flex-shrink-0 animate-pulse"></span>
+            <span class="i18n" data-en="Content that drives attention &amp; traffic." data-th="คอนเทนต์ที่ดึงความสนใจและสร้างทราฟฟิก">Content that drives attention &amp; traffic.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── APPLY ────────────────────────────────────── -->
+  <section id="apply" class="py-20 bg-white/[0.03] border-t border-white/10">
+    <div class="px-6">
+      <div id="apply-card" class="bg-primary rounded-2xl border border-white/10 mx-auto max-w-7xl p-8 md:p-12">
+        <h3 class="text-2xl font-black uppercase text-white mb-1 i18n" data-en="Apply Today" data-th="สมัครวันนี้">Apply Today</h3>
+        <p class="text-[#8A99BB] text-sm mb-6 i18n" data-en="We'll review your brand and get back to you within 24 hours. No commitment." data-th="เราจะตรวจสอบแบรนด์ของคุณและติดต่อกลับภายใน 24 ชั่วโมง ไม่มีข้อผูกมัด">We'll review your brand and get back to you within 24 hours. No commitment.</p>
+
+        <form id="apply-form" class="space-y-6">
+          <div>
+            <p class="text-gold font-semibold mb-3 text-sm i18n" data-en="I'm Interested In *" data-th="ฉันสนใจ *">I'm Interested In *</p>
+            <div class="grid gap-3 grid-cols-1 sm:grid-cols-2">
+              <label class="flex items-center gap-3 cursor-pointer group">
+                <input type="radio" name="interest" required value="Growth Systems for Hospitality Brands" class="peer sr-only" />
+                <div class="w-5 h-5 rounded-full border-2 border-white/30 flex-shrink-0 flex items-center justify-center transition-all duration-200 cursor-pointer peer-checked:bg-gold peer-checked:border-gold group-hover:border-gold/60"><div class="w-2 h-2 rounded-full bg-[#1e2d4e] hidden peer-checked:block"></div></div>
+                <span class="text-white/80 text-sm group-hover:text-white transition-colors i18n" data-en="Growth Systems for Hospitality Brands" data-th="ระบบเติบโตสำหรับธุรกิจโรงแรมและร้านอาหาร">Growth Systems for Hospitality Brands</span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer group">
+                <input type="radio" name="interest" required value="Growth Systems for Hospitality Brands + Paid Traffic & Lead Gen" class="peer sr-only" />
+                <div class="w-5 h-5 rounded-full border-2 border-white/30 flex-shrink-0 flex items-center justify-center transition-all duration-200 cursor-pointer peer-checked:bg-gold peer-checked:border-gold group-hover:border-gold/60"><div class="w-2 h-2 rounded-full bg-[#1e2d4e] hidden peer-checked:block"></div></div>
+                <span class="text-white/80 text-sm group-hover:text-white transition-colors i18n" data-en="Growth Systems for Hospitality Brands + Paid Traffic & Lead Gen" data-th="ระบบเติบโตสำหรับธุรกิจโรงแรมและร้านอาหาร + โฆษณาและหาลูกค้า">Growth Systems for Hospitality Brands + Paid Traffic & Lead Gen</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <p class="text-gold font-semibold mb-3 text-sm i18n" data-en="Tell Us About Yourself" data-th="บอกเราเกี่ยวกับคุณ">Tell Us About Yourself</p>
+            <div class="space-y-4">
+              <div class="grid gap-4 grid-cols-1 sm:grid-cols-2">
+                <div>
+                  <label for="vp-name" class="text-white/60 text-xs uppercase tracking-widest block mb-1 i18n" data-en="Name *" data-th="ชื่อ *">Name *</label>
+                  <input id="vp-name" name="name" required autocomplete="name" placeholder="John Doe" class="w-full bg-transparent border-b border-white/20 focus:border-gold outline-none text-white placeholder-white/30 py-2 text-sm transition-colors" />
+                </div>
+                <div>
+                  <label for="vp-business" class="text-white/60 text-xs uppercase tracking-widest block mb-1 i18n" data-en="Business Name *" data-th="ชื่อธุรกิจ *">Business Name *</label>
+                  <input id="vp-business" name="business" required autocomplete="organization" placeholder="e.g. Okasan Izakaya" class="w-full bg-transparent border-b border-white/20 focus:border-gold outline-none text-white placeholder-white/30 py-2 text-sm transition-colors" />
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="vp-email" class="text-white/60 text-xs uppercase tracking-widest block mb-1 i18n" data-en="E-mail *" data-th="อีเมล *">E-mail *</label>
+                  <input id="vp-email" name="email" required type="email" autocomplete="email" spellcheck="false" placeholder="email@email.com" class="w-full bg-transparent border-b border-white/20 focus:border-gold outline-none text-white placeholder-white/30 py-2 text-sm transition-colors" />
+                </div>
+                <div>
+                  <label for="vp-phone" class="text-white/60 text-xs uppercase tracking-widest block mb-1 i18n" data-en="Phone *" data-th="เบอร์โทร *">Phone *</label>
+                  <input id="vp-phone" name="phone" required type="tel" inputmode="tel" autocomplete="tel" placeholder="+66..." class="w-full bg-transparent border-b border-white/20 focus:border-gold outline-none text-white placeholder-white/30 py-2 text-sm transition-colors" />
+                </div>
+              </div>
+              <fieldset>
+                <legend class="text-white/60 text-xs uppercase tracking-widest block mb-2 i18n" data-en="When To Get Started?" data-th="พร้อมเริ่มเมื่อไหร่?">When To Get Started?</legend>
+                <div class="flex flex-wrap gap-4">
+                  <label class="flex items-center gap-2 cursor-pointer group">
+                    <input type="radio" name="start" value="ASAP" class="accent-gold w-4 h-4 flex-shrink-0" />
+                    <span class="text-white/80 text-sm group-hover:text-white transition-colors i18n" data-en="ASAP" data-th="เร็วที่สุด">ASAP</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer group">
+                    <input type="radio" name="start" value="Within 1 Month" class="accent-gold w-4 h-4 flex-shrink-0" />
+                    <span class="text-white/80 text-sm group-hover:text-white transition-colors i18n" data-en="Within 1 Month" data-th="ภายใน 1 เดือน">Within 1 Month</span>
+                  </label>
+                  <label class="flex items-center gap-2 cursor-pointer group">
+                    <input type="radio" name="start" value="Just Browsing" class="accent-gold w-4 h-4 flex-shrink-0" />
+                    <span class="text-white/80 text-sm group-hover:text-white transition-colors i18n" data-en="Just Browsing" data-th="แค่ดูข้อมูล">Just Browsing</span>
+                  </label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-3 pt-2">
+            <button type="submit" class="flex-1 anim-cta-pulse inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold/85 text-primary font-black uppercase text-sm tracking-widest px-8 py-4 rounded-xl transition-[background-color,transform] duration-200 hover:scale-[1.01] shadow-xl">
+              <span class="i18n" data-en="Apply Today" data-th="สมัครวันนี้">Apply Today</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </button>
+            <a href="https://calendly.com/dreamkeymedia/growth-system" target="_blank" rel="noopener noreferrer" class="flex-1 inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-black uppercase text-sm tracking-widest px-8 py-4 rounded-xl transition-colors duration-200 i18n" data-en="Book A Strategy Call" data-th="นัดคุยกลยุทธ์">Book A Strategy Call</a>
+          </div>
+          <p class="text-white/30 text-xs text-center i18n" data-en="No commitment. We'll contact you within 24 hours." data-th="ไม่มีข้อผูกมัด เราจะติดต่อกลับภายใน 24 ชั่วโมง">No commitment. We'll contact you within 24 hours.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PHILOSOPHY ───────────────────────────────── -->
+  <section class="py-20 bg-white/[0.03] border-t border-white/10">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <div class="inline-block bg-gold/10 text-gold text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-8 i18n" data-en="The Dreamkey Philosophy" data-th="แนวคิดของ Dreamkey">The Dreamkey Philosophy</div>
+      <h2 class="text-3xl md:text-4xl font-black uppercase leading-tight mb-6 i18n" data-en="Most hospitality businesses don't have a marketing problem. They have a systems problem." data-th="ธุรกิจโรงแรมและร้านอาหารส่วนใหญ่ไม่มีปัญหาด้านการตลาด พวกเขามีปัญหาด้านระบบ">Most hospitality businesses don't have a marketing problem. They have a systems problem.</h2>
+      <p class="text-white/55 text-base leading-relaxed i18n" data-en="Random posting. Random ads. No follow up. No repeat customer strategy. As competition increases, hospitality brands need more than content and advertising. They need systems." data-th="โพสต์มั่ว ยิงแอดมั่ว ไม่มีการติดตามลูกค้า ไม่มีกลยุทธ์ดึงลูกค้าเก่า ยิ่งคู่แข่งมากขึ้น ธุรกิจโรงแรมและร้านอาหารต้องการมากกว่าคอนเทนต์และโฆษณา พวกเขาต้องการระบบ">Random posting. Random ads. No follow up. No repeat customer strategy. As competition increases, hospitality brands need more than content and advertising. They need systems.</p>
+    </div>
+  </section>
+
+  <!-- ── WHAT'S INCLUDED ──────────────────────────── -->
+  <section id="included" class="py-24 border-t border-white/10">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="inline-block bg-gold/10 text-gold text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-4 i18n" data-en="What's Included" data-th="สิ่งที่คุณจะได้รับ">What's Included</div>
+        <h2 class="text-4xl md:text-5xl font-black uppercase i18n" data-en="Everything You Need. Nothing You Don't." data-th="ทุกอย่างที่คุณต้องการ ไม่มีสิ่งที่ไม่จำเป็น">Everything You Need. Nothing You Don't.</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+          <div class="relative">
+            <div class="grid gap-0.5 grid-cols-5">
+              <div class="aspect-square"><img src="https://i.ytimg.com/vi/1w6NuvsW4X4/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" /></div>
+              <div class="aspect-square"><img src="https://i.ytimg.com/vi/3G0rc4yfnzw/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" /></div>
+              <div class="aspect-square"><img src="https://i.ytimg.com/vi/65VTTCUql08/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" /></div>
+              <div class="aspect-square"><img src="https://i.ytimg.com/vi/6UTaR7LM08U/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" /></div>
+              <div class="aspect-square"><img src="https://i.ytimg.com/vi/AK9YK7iXoCw/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" /></div>
+            </div>
+            <div class="absolute -bottom-5 left-3 w-11 h-11 bg-gold rounded-xl flex items-center justify-center shadow-lg"><svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-2.36a.75.75 0 011.03.67v9.38a.75.75 0 01-1.03.67l-4.72-2.36M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 9v9a2.25 2.25 0 002.25 2.25z"/></svg></div>
+          </div>
+          <div class="p-8">
+            <h3 class="font-black text-base uppercase leading-tight mb-3 mt-3 i18n" data-en="5 High Quality Videos / Month" data-th="วิดีโอคุณภาพสูง 5 คลิป / เดือน">5 High Quality Videos / Month</h3>
+            <p class="text-white/55 text-sm mb-5 leading-relaxed i18n" data-en="Professional Reels shot and edited for your brand, ready for organic and paid use." data-th="Reels คุณภาพระดับโปร ถ่ายและตัดต่อให้แบรนด์ของคุณ พร้อมใช้ทั้งโพสต์ทั่วไปและโฆษณา">Professional Reels shot and edited for your brand, ready for organic and paid use.</p>
+            <ul class="space-y-2 text-sm text-white/75">
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="On location filming" data-th="ถ่ายทำที่หน้าร้าน">On location filming</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Professional editing" data-th="ตัดต่อโดยทีมมืออาชีพ">Professional editing</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Social optimised format" data-th="ฟอร์แมตเหมาะกับโซเชียล">Social optimised format</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Designed for organic reach" data-th="ออกแบบเพื่อการเข้าถึงแบบออร์แกนิก">Designed for organic reach</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Designed for paid advertising" data-th="ออกแบบเพื่อใช้ยิงโฆษณา">Designed for paid advertising</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+          <div class="relative aspect-[16/9] bg-[#0d1424]">
+            <img src="images/menu-shoot.jpg" alt="30 High Quality Images for Social Media" loading="lazy" class="w-full h-full object-contain" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#1a2444] via-[#1a2444]/10 to-transparent"></div>
+            <div class="absolute bottom-3 left-3 w-11 h-11 bg-gold/90 rounded-xl flex items-center justify-center shadow-lg"><svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.25 2.25 0 015.25 7.5H4.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h15a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-.75a2.25 2.25 0 01-1.577-1.325l-.621-1.5A2.25 2.25 0 0014.5 3.75h-5a2.25 2.25 0 00-2.077 1.4l-.596 1.025z"/><circle cx="12" cy="13" r="3.25" stroke="currentColor" fill="none" stroke-width="2"/></svg></div>
+          </div>
+          <div class="p-8">
+            <h3 class="font-black text-base uppercase leading-tight mb-3 i18n" data-en="30 High Quality Images for Social Media" data-th="ภาพคุณภาพสูง 30 ภาพสำหรับโซเชียลมีเดีย">30 High Quality Images for Social Media</h3>
+            <p class="text-white/55 text-sm mb-5 leading-relaxed i18n" data-en="Styled food photography that makes the menu look as good as it tastes." data-th="ภาพถ่ายอาหารจัดสไตล์ ให้เมนูดูดีสมกับรสชาติ">Styled food photography that makes the menu look as good as it tastes.</p>
+            <ul class="space-y-2 text-sm text-white/75">
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Professional styling" data-th="จัดสไตล์โดยมืออาชีพ">Professional styling</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="On location shoot" data-th="ถ่ายที่หน้าร้าน">On location shoot</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Edited & colour corrected" data-th="ตัดต่อและปรับสีแล้ว">Edited & colour corrected</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Ready for socials" data-th="พร้อมใช้บนโซเชียล">Ready for socials</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="10 Menu Shots, delivery apps & print" data-th="รวมภาพเมนู 10 ภาพ ใช้ได้ทั้งแอปเดลิเวอรีและสิ่งพิมพ์">10 Menu Shots, delivery apps & print</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+          <div class="relative bg-[#0d1424] p-4 pb-6">
+            <div class="rounded-md overflow-hidden bg-black aspect-[16/10]"><img src="images/landing-mockup.png" alt="Landing Page Optimisation" loading="lazy" class="w-full h-full object-cover object-top" /></div>
+            <div class="absolute left-1/2 -translate-x-1/2 bottom-2 w-16 h-1 bg-white/10 rounded-full"></div>
+            <div class="absolute -bottom-5 left-3 w-11 h-11 bg-gold rounded-xl flex items-center justify-center shadow-lg"><svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18zm0 0c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3 7.5 7.03 7.5 12 9.515 21 12 21zM3.6 9h16.8M3.6 15h16.8"/></svg></div>
+          </div>
+          <div class="p-8">
+            <h3 class="font-black text-base uppercase leading-tight mb-3 mt-3 i18n" data-en="Landing Page Optimisation" data-th="ปรับแต่งแลนดิ้งเพจ">Landing Page Optimisation</h3>
+            <p class="text-white/55 text-sm mb-5 leading-relaxed i18n" data-en="A page built to turn visitors into enquiries, not just views." data-th="เพจที่สร้างมาเพื่อเปลี่ยนผู้เข้าชมให้เป็นการทักมา ไม่ใช่แค่ยอดวิว">A page built to turn visitors into enquiries, not just views.</p>
+            <ul class="space-y-2 text-sm text-white/75">
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Mobile responsive design" data-th="ออกแบบรองรับมือถือ">Mobile responsive design</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Lead capture forms" data-th="ฟอร์มเก็บข้อมูลลูกค้า">Lead capture forms</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Clear calls to action" data-th="ปุ่มกระตุ้นการตัดสินใจที่ชัดเจน">Clear calls to action</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Tracking & analytics setup" data-th="ติดตั้งระบบติดตามผล">Tracking & analytics setup</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+          <div class="relative aspect-[16/9]">
+            <img src="images/automation-diagram.png" alt="AI Automation & Follow Up" loading="lazy" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#1a2444] via-[#1a2444]/10 to-transparent"></div>
+            <div class="absolute bottom-3 left-3 w-11 h-11 bg-gold/90 rounded-xl flex items-center justify-center shadow-lg"><svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082M9.75 3.104a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5M19.8 15.3l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"/></svg></div>
+          </div>
+          <div class="p-8">
+            <h3 class="font-black text-base uppercase leading-tight mb-3 i18n" data-en="AI Automation & Follow Up" data-th="ระบบอัตโนมัติและการติดตามลูกค้า">AI Automation & Follow Up</h3>
+            <p class="text-white/55 text-sm mb-5 leading-relaxed i18n" data-en="WhatsApp & LINE automation so no enquiry goes cold." data-th="ระบบอัตโนมัติผ่าน WhatsApp และ LINE ไม่ให้ลูกค้าหายไปเงียบๆ">WhatsApp & LINE automation so no enquiry goes cold.</p>
+            <ul class="space-y-2 text-sm text-white/75">
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Instant automated replies" data-th="ตอบกลับอัตโนมัติทันที">Instant automated replies</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Booking & enquiry follow up" data-th="ติดตามการจองและคำถามลูกค้า">Booking & enquiry follow up</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Reminder sequences" data-th="ระบบแจ้งเตือนอัตโนมัติ">Reminder sequences</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Internal staff notifications" data-th="แจ้งเตือนทีมงานภายใน">Internal staff notifications</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden md:col-span-2">
+          <div class="relative">
+            <div class="grid gap-0.5 grid-cols-3">
+              <div class="aspect-square"><img src="https://i.ytimg.com/vi/BrtMuYhWMCY/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" /></div>
+              <div class="aspect-square"><img src="https://i.ytimg.com/vi/IUpw3AeCV_g/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" /></div>
+              <div class="aspect-square"><img src="https://i.ytimg.com/vi/Rq6YtxQ-w7k/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" /></div>
+            </div>
+            <div class="absolute -bottom-5 left-3 w-11 h-11 bg-gold rounded-xl flex items-center justify-center shadow-lg"><svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="9" stroke="currentColor" fill="none"/><circle cx="12" cy="12" r="5" stroke="currentColor" fill="none"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></div>
+          </div>
+          <div class="p-8">
+            <h3 class="font-black text-base uppercase leading-tight mb-3 mt-3 i18n" data-en="Content Strategy" data-th="กลยุทธ์คอนเทนต์">Content Strategy</h3>
+            <p class="text-white/55 text-sm mb-5 leading-relaxed i18n" data-en="A monthly plan, not random posting." data-th="แผนคอนเทนต์รายเดือน ไม่ใช่โพสต์มั่ว">A monthly plan, not random posting.</p>
+            <ul class="space-y-2 text-sm text-white/75">
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Monthly shoot planning" data-th="วางแผนถ่ายทำรายเดือน">Monthly shoot planning</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Brand aligned creative direction" data-th="ทิศทางครีเอทีฟตรงกับแบรนด์">Brand aligned creative direction</span></li>
+              <li class="flex items-start gap-2"><span class="text-gold/60">✓</span><span class="i18n" data-en="Trend responsive concepts" data-th="คอนเซ็ปต์ตามเทรนด์">Trend responsive concepts</span></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flex flex-col items-center gap-4 mt-16 text-center">
+        <p class="text-[#F5B942] font-black text-3xl">39,900 THB / Month</p>
+        <a href="https://calendly.com/dreamkeymedia/growth-system" target="_blank" rel="noopener noreferrer" class="anim-cta-pulse inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold/85 text-primary font-black uppercase text-sm tracking-widest px-8 py-4 rounded-xl transition-[background-color,transform] duration-200 hover:scale-[1.01] shadow-xl">
+          <span class="i18n" data-en="Book A Strategy Call" data-th="นัดคุยกลยุทธ์">Book A Strategy Call</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHO THIS IS FOR ──────────────────────────── -->
+  <section class="py-20 bg-white/[0.03] border-t border-white/10">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <div class="inline-block bg-gold/10 text-gold text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-4 i18n" data-en="Who This Is For" data-th="เหมาะกับใคร">Who This Is For</div>
+        <h2 class="text-4xl md:text-5xl font-black uppercase i18n" data-en="Built for Hospitality." data-th="สร้างมาเพื่อธุรกิจโรงแรมและร้านอาหาร">Built for Hospitality.</h2>
+      </div>
+      <div class="flex flex-wrap justify-center gap-4">
+        <div class="flex items-center gap-3 bg-white/5 border border-gold/20 rounded-full px-7 py-4"><svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="font-bold text-white text-sm uppercase tracking-wide i18n" data-en="Restaurants" data-th="ร้านอาหาร">Restaurants</span></div>
+        <div class="flex items-center gap-3 bg-white/5 border border-gold/20 rounded-full px-7 py-4"><svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="font-bold text-white text-sm uppercase tracking-wide i18n" data-en="Cafés" data-th="คาเฟ่">Cafés</span></div>
+        <div class="flex items-center gap-3 bg-white/5 border border-gold/20 rounded-full px-7 py-4"><svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="font-bold text-white text-sm uppercase tracking-wide i18n" data-en="Bars" data-th="บาร์">Bars</span></div>
+        <div class="flex items-center gap-3 bg-white/5 border border-gold/20 rounded-full px-7 py-4"><svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="font-bold text-white text-sm uppercase tracking-wide i18n" data-en="Nightclubs" data-th="ไนท์คลับ">Nightclubs</span></div>
+        <div class="flex items-center gap-3 bg-white/5 border border-gold/20 rounded-full px-7 py-4"><svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="font-bold text-white text-sm uppercase tracking-wide i18n" data-en="Beach Clubs" data-th="บีชคลับ">Beach Clubs</span></div>
+        <div class="flex items-center gap-3 bg-white/5 border border-gold/20 rounded-full px-7 py-4"><svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="font-bold text-white text-sm uppercase tracking-wide i18n" data-en="Hotels" data-th="โรงแรม">Hotels</span></div>
+        <div class="flex items-center gap-3 bg-white/5 border border-gold/20 rounded-full px-7 py-4"><svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="font-bold text-white text-sm uppercase tracking-wide i18n" data-en="Entertainment Venues" data-th="สถานบันเทิง">Entertainment Venues</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHY DREAMKEY ─────────────────────────────── -->
+  <section class="py-20 border-t border-white/10">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center gap-12">
+        <img src="images/marco.jpg" alt="Marco Sager, Founder of Dreamkey Media" class="w-44 h-44 md:w-56 md:h-56 rounded-full object-cover object-top border-4 border-gold/30 shadow-2xl flex-shrink-0" />
+        <div>
+          <div class="inline-block bg-gold/10 text-gold text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-5 i18n" data-en="Why Dreamkey Media" data-th="ทำไมต้อง Dreamkey Media">Why Dreamkey Media</div>
+          <h2 class="text-3xl md:text-4xl font-black uppercase mb-4 i18n" data-en="Led by Marco Sager" data-th="นำทีมโดย Marco Sager">Led by Marco Sager</h2>
+          <p class="text-white/60 text-base leading-relaxed mb-4 i18n" data-en="With over 25 years of experience in hospitality, nightlife, events, and marketing. Marco brings hands on operator experience that most marketing agencies simply don't have." data-th="ด้วยประสบการณ์กว่า 25 ปีในธุรกิจโรงแรม ไนท์ไลฟ์ อีเวนต์ และการตลาด Marco มีประสบการณ์ตรงจากการลงมือทำธุรกิจจริง ซึ่งเอเจนซี่การตลาดทั่วไปไม่มี">With over 25 years of experience in hospitality, nightlife, events, and marketing. Marco brings hands on operator experience that most marketing agencies simply don't have.</p>
+          <p class="text-white/60 text-base leading-relaxed i18n" data-en="Every shoot is led by director Atikun Reusing: 12 years on set, RED & Blackmagic cinema cameras, and a portfolio that includes Agoda, Marriott, Aperol and Campari. We combine that production quality with automation and systems to help hospitality brands grow more predictably." data-th="ทุกการถ่ายทำนำโดยผู้กำกับ Atikun Reusing ที่มีประสบการณ์ในกองถ่ายกว่า 12 ปี ใช้กล้องซีนีม่า RED และ Blackmagic และมีผลงานร่วมกับ Agoda, Marriott, Aperol และ Campari เรารวมคุณภาพงานโปรดักชันนี้เข้ากับระบบอัตโนมัติ เพื่อช่วยให้ธุรกิจโรงแรมและร้านอาหารเติบโตได้อย่างคาดการณ์ได้มากขึ้น">Every shoot is led by director Atikun Reusing: 12 years on set, RED & Blackmagic cinema cameras, and a portfolio that includes Agoda, Marriott, Aperol and Campari. We combine that production quality with automation and systems to help hospitality brands grow more predictably.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SCALE WHEN READY ─────────────────────────── -->
+  <section class="py-20 bg-white/[0.03] border-t border-white/10">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <div class="inline-block bg-gold/10 text-gold text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-4 i18n" data-en="Start With The Foundation" data-th="เริ่มต้นจากพื้นฐาน">Start With The Foundation</div>
+        <h2 class="text-4xl md:text-5xl font-black uppercase i18n" data-en="Scale When You're Ready." data-th="ขยายเมื่อคุณพร้อม">Scale When You're Ready.</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div class="flex items-start gap-4 bg-white/5 border border-white/10 rounded-xl px-6 py-5">
+          <div class="w-10 h-10 bg-gold/10 border border-gold/20 rounded-lg flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.306a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/></svg></div>
+          <div><div class="flex items-center gap-2 mb-1"><div class="font-black text-sm uppercase tracking-wide text-white i18n" data-en="Paid Traffic & Lead Generation" data-th="โฆษณาและหาลูกค้า">Paid Traffic & Lead Generation</div><div class="text-gold font-bold text-xs whitespace-nowrap">18,000 THB/mo</div></div><div class="text-white/50 text-xs leading-relaxed i18n" data-en="Meta, Instagram & Google Ads Management. Ad spend billed on top." data-th="ดูแลโฆษณา Meta, Instagram และ Google ค่าโฆษณาคิดแยกเพิ่มเติม">Meta, Instagram & Google Ads Management. Ad spend billed on top.</div></div>
+        </div>
+        <div class="flex items-start gap-4 bg-white/5 border border-white/10 rounded-xl px-6 py-5">
+          <div class="w-10 h-10 bg-gold/10 border border-gold/20 rounded-lg flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg></div>
+          <div><div class="flex items-center gap-2 mb-1"><div class="font-black text-sm uppercase tracking-wide text-white">Google My Business</div><div class="text-gold font-bold text-xs whitespace-nowrap">4,000 THB/mo</div></div><div class="text-white/50 text-xs leading-relaxed i18n" data-en="Get found and chosen on Google Maps & Search." data-th="ให้ลูกค้าเจอและเลือกร้านคุณบน Google แมพและการค้นหา">Get found and chosen on Google Maps & Search.</div></div>
+        </div>
+        <div class="flex items-start gap-4 bg-white/5 border border-white/10 rounded-xl px-6 py-5">
+          <div class="w-10 h-10 bg-gold/10 border border-gold/20 rounded-lg flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div>
+          <div><div class="flex items-center gap-2 mb-1"><div class="font-black text-sm uppercase tracking-wide text-white i18n" data-en="Reputation Management" data-th="ดูแลรีวิวและความน่าเชื่อถือ">Reputation Management</div><div class="text-gold font-bold text-xs whitespace-nowrap">6,500 THB/mo</div></div><div class="text-white/50 text-xs leading-relaxed i18n" data-en="Reviews, responses, and reputation monitored." data-th="ดูแลรีวิว ตอบกลับ และติดตามความน่าเชื่อถือของแบรนด์">Reviews, responses, and reputation monitored.</div></div>
+        </div>
+        <div class="flex items-start gap-4 bg-white/5 border border-white/10 rounded-xl px-6 py-5">
+          <div class="w-10 h-10 bg-gold/10 border border-gold/20 rounded-lg flex items-center justify-center flex-shrink-0"><svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385c.116.486-.412.87-.84.61l-4.725-2.885a.562.562 0 00-.586 0L6.982 21.04c-.428.26-.956-.124-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602c-.38-.325-.178-.948.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg></div>
+          <div><div class="flex items-center gap-2 mb-1"><div class="font-black text-sm uppercase tracking-wide text-white i18n" data-en="Marketing & Growth Consulting" data-th="ที่ปรึกษาการตลาดและการเติบโต">Marketing & Growth Consulting</div><div class="text-gold font-bold text-xs whitespace-nowrap">12,500 THB/mo</div></div><div class="text-white/50 text-xs leading-relaxed i18n" data-en="Ongoing strategic guidance as you scale." data-th="คำแนะนำเชิงกลยุทธ์ต่อเนื่องระหว่างที่คุณขยายธุรกิจ">Ongoing strategic guidance as you scale.</div></div>
+        </div>
+      </div>
+      <p class="text-white/30 text-xs text-center mt-8 i18n" data-en="Addons billed separately on top of your monthly package. Ad spend not included." data-th="บริการเสริมคิดค่าใช้จ่ายแยกจากแพ็กเกจรายเดือน ไม่รวมค่าโฆษณา">Addons billed separately on top of your monthly package. Ad spend not included.</p>
+    </div>
+  </section>
+
+  <!-- ── INVESTMENT ───────────────────────────────── -->
+  <section class="py-20 border-t border-white/10">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <div class="inline-block bg-gold/10 text-gold text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-8 i18n" data-en="Investment" data-th="งบลงทุน">Investment</div>
+      <div class="bg-gradient-to-br from-gold/10 to-transparent border border-gold/20 rounded-2xl p-10">
+        <p class="text-white/60 font-semibold uppercase tracking-widest text-sm mb-2 i18n" data-en="Growth Systems for Hospitality Brands" data-th="ระบบเติบโตสำหรับธุรกิจโรงแรมและร้านอาหาร">Growth Systems for Hospitality Brands</p>
+        <div id="price-count" class="text-gold font-black text-7xl leading-none mb-2 tabular-nums">0</div>
+        <p class="text-white/60 font-bold uppercase tracking-widest text-xl mb-2 i18n" data-en="THB / Month" data-th="บาท / เดือน">THB / Month</p>
+        <p class="text-white/35 text-sm mb-8 i18n" data-en="Ad spend and addons billed separately" data-th="ค่าโฆษณาและบริการเสริมคิดแยกต่างหาก">Ad spend and addons billed separately</p>
+        <a href="https://calendly.com/dreamkeymedia/growth-system" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-gold hover:bg-gold/85 text-primary font-black uppercase text-base tracking-widest px-10 py-5 rounded-xl transition-[background-color,transform] duration-200 hover:scale-[1.03] shadow-xl">
+          <span class="i18n" data-en="Book a Strategy Call" data-th="นัดคุยกลยุทธ์">Book a Strategy Call</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ────────────────────────────────── -->
+  <section class="py-24 border-t border-white/10">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <h2 class="text-4xl md:text-5xl font-black uppercase mb-6 i18n" data-en="Ready for More Guests?" data-th="พร้อมรับลูกค้าเพิ่มหรือยัง?">Ready for More Guests?</h2>
+      <p class="text-white/60 text-lg mb-10 leading-relaxed i18n" data-en="Let's discuss how a growth system, not just content, can bring your hospitality brand more guests, more orders, and more repeat customers." data-th="มาคุยกันว่าระบบเติบโต ไม่ใช่แค่คอนเทนต์ จะช่วยให้ธุรกิจของคุณมีลูกค้าเพิ่มขึ้น ออเดอร์มากขึ้น และลูกค้าประจำมากขึ้นได้อย่างไร">Let's discuss how a growth system, not just content, can bring your hospitality brand more guests, more orders, and more repeat customers.</p>
+
+      <a href="https://calendly.com/dreamkeymedia/growth-system" target="_blank" rel="noopener noreferrer" class="anim-cta-pulse inline-flex items-center gap-2 bg-gold hover:bg-gold/85 text-primary font-black uppercase text-lg tracking-widest px-12 py-6 rounded-xl transition-[background-color,transform] duration-200 hover:scale-[1.03] shadow-2xl mb-10">
+        <span class="i18n" data-en="Book Your Strategy Call" data-th="นัดคุยกลยุทธ์ของคุณ">Book Your Strategy Call</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+
+      <div class="flex flex-col items-center gap-3 mb-10">
+        <p class="text-white/40 text-xs uppercase tracking-widest i18n" data-en="Or add us on LINE" data-th="หรือเพิ่มเราเป็นเพื่อนใน LINE">Or add us on LINE</p>
+        <div class="bg-white rounded-2xl p-3 shadow-xl inline-block"><img src="images/line-qr.jpg" alt="Scan to add Dreamkey Media on LINE" width="144" height="144" class="w-36 h-36 object-contain rounded-lg" /></div>
+        <p class="text-white/30 text-xs i18n" data-en="Scan with your camera" data-th="สแกนด้วยกล้องมือถือ">Scan with your camera</p>
+      </div>
+
+      <div class="flex justify-center flex-wrap gap-8 mt-2">
+        <a href="https://wa.me/66970752722" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-gold/70 hover:text-gold text-sm font-semibold transition-colors">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+        <a href="tel:+66970752722" class="flex items-center gap-2 text-gold/70 hover:text-gold text-sm font-semibold transition-colors">+66 97 075 2722</a>
+      </div>
+
+      <p class="text-white/20 text-xs mt-10 i18n" data-en="dreamkeymedia.net · Bangkok, Thailand" data-th="dreamkeymedia.net · กรุงเทพฯ ประเทศไทย">dreamkeymedia.net · Bangkok, Thailand</p>
+    </div>
+  </section>
+
+<script>
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.i18n').forEach((el) => { el.textContent = el.dataset[lang]; });
+    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    document.getElementById('lang-th').classList.toggle('active', lang === 'th');
+    localStorage.setItem('demoLang', lang);
+  }
+  setLang(localStorage.getItem('demoLang') || 'en');
+
+  document.querySelectorAll('.reveal').forEach((el) => {
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { el.classList.add('is-visible'); obs.disconnect(); }
+    }, { threshold: 0.15 });
+    obs.observe(el);
+  });
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach((el) => {
+        if (el.closest('section') === document.querySelector('section')) el.classList.add('is-visible');
+      });
+    }, 80);
+  });
+
+  (function () {
+    const priceEl = document.getElementById('price-count');
+    const target = 39900;
+    const duration = 1600;
+    let started = false;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        let start = null;
+        function step(ts) {
+          if (!start) start = ts;
+          const progress = Math.min((ts - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          priceEl.textContent = Math.floor(eased * target).toLocaleString();
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+        obs.disconnect();
+      }
+    }, { threshold: 0.5 });
+    obs.observe(priceEl);
+  })();
+
+  window.addEventListener('load', () => {
+    const run = () => {
+      const video = document.getElementById('hero-video');
+      const source = video.querySelector('source');
+      source.src = source.dataset.src;
+      video.load();
+      video.play().catch(() => {});
+    };
+    if ('requestIdleCallback' in window) requestIdleCallback(run, { timeout: 2000 });
+    else setTimeout(run, 200);
+  });
+</script>
+
+</body>
+</html>
