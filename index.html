@@ -130,9 +130,14 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
       <!-- RIGHT — showcase reel -->
       <div class="reveal anim-fade-in w-full lg:w-1/2 flex justify-center" style="animation-delay:300ms">
         <div class="relative w-full max-w-xs aspect-[9/16] rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black">
-          <video id="hero-video" class="w-full h-full object-cover" muted loop playsinline preload="none" poster="media/hero-reel-poster.jpg">
+          <video id="hero-video" class="w-full h-full object-cover" muted loop playsinline webkit-playsinline preload="none" poster="media/hero-reel-poster.jpg">
             <source data-src="media/hero-reel.mp4" type="video/mp4" />
           </video>
+          <button id="hero-video-play" type="button" class="hidden absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors" aria-label="Play video">
+            <span class="w-16 h-16 rounded-full bg-gold/90 flex items-center justify-center shadow-xl">
+              <svg class="w-7 h-7 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+          </button>
           <div class="absolute top-3 left-3 right-3 flex items-start gap-2 bg-black/50 backdrop-blur text-white/90 text-xs font-semibold leading-snug px-3 py-2 rounded-xl">
             <span class="w-1.5 h-1.5 rounded-full bg-gold mt-1 flex-shrink-0 animate-pulse"></span>
             Content that drives attention & traffic.
@@ -589,15 +594,36 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
 // Defer hero video fetch until after initial paint, so it never competes with critical render.
 // Triggered on DOMContentLoaded (not 'load') so it doesn't wait on every image on the page (e.g. YouTube thumbnails).
   document.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('hero-video');
+    const playBtn = document.getElementById('hero-video-play');
+
+    function showPlayButton() { playBtn.classList.remove('hidden'); }
+    function hidePlayButton() { playBtn.classList.add('hidden'); }
+
+    function tryPlay() {
+      const p = video.play();
+      if (p && typeof p.catch === 'function') {
+        p.then(hidePlayButton).catch(showPlayButton);
+      }
+    }
+
     const run = () => {
-      const video = document.getElementById('hero-video');
       const source = video.querySelector('source');
       source.src = source.dataset.src;
       video.load();
-      video.play().catch(() => {});
+      tryPlay();
     };
     if ('requestIdleCallback' in window) requestIdleCallback(run, { timeout: 1000 });
     else setTimeout(run, 100);
+
+    video.addEventListener('playing', hidePlayButton);
+    video.addEventListener('pause', showPlayButton);
+    playBtn.addEventListener('click', tryPlay);
+
+    // Any tap/click anywhere on the page counts as a user gesture — retry blocked autoplay once.
+    const retryOnGesture = () => { if (video.paused) tryPlay(); };
+    document.addEventListener('touchstart', retryOnGesture, { once: true, passive: true });
+    document.addEventListener('click', retryOnGesture, { once: true });
   });
 
   // Form submit -> WhatsApp (primary) + Formspree email copy (once endpoint is set)
