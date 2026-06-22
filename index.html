@@ -6,6 +6,7 @@
 <title>Growth Systems for Hospitality Brands: 39,900 THB/Month | Dreamkey Media</title>
 <meta name="description" content="Growth systems for hospitality brands. 5 videos, 10 menu shots, a converting landing page and automated follow up, every month. Dreamkey Media, Bangkok." />
 <link rel="canonical" href="https://dreamkeymedia.net/video-promo" />
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <!-- Meta Pixel Code -->
 <script>
@@ -223,6 +224,8 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
               </fieldset>
             </div>
           </div>
+
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADo3tqm3D9EMJykC" data-theme="dark"></div>
 
           <div class="flex flex-col sm:flex-row gap-3 pt-2">
             <button type="submit" class="flex-1 anim-cta-pulse inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold/85 text-primary font-black uppercase text-sm tracking-widest px-8 py-4 rounded-xl transition-[background-color,transform] duration-200 hover:scale-[1.01] shadow-xl">
@@ -630,6 +633,11 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
     e.preventDefault();
     const form = e.target;
     const fd = new FormData(form);
+
+    if (!fd.get('cf-turnstile-response')) {
+      alert('Please complete the security check before submitting.');
+      return;
+    }
     const summary =
       'New Apply Today lead:\n' +
       'Name: ' + fd.get('name') +
