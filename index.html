@@ -800,6 +800,9 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
       alert('Please complete the security check before submitting.');
       return;
     }
+
+    if (typeof fbq === 'function') { fbq('track', 'Lead', { content_name: fd.get('interest') || '' }); }
+
     const summary =
       'New Apply Today lead:\n' +
       'Name: ' + fd.get('name') +
@@ -821,6 +824,19 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
       '<p class="text-[#8A99BB] text-sm">We just opened WhatsApp with your details. Hit send there and we\'ll reply within 24 hours.</p>' +
       '</div>';
   });
+</script>
+
+<script>
+document.addEventListener('click', function (e) {
+  if (typeof fbq !== 'function') return;
+  var a = e.target.closest('a[href]');
+  if (!a) return;
+  var h = a.href;
+  if (/wa\.me|lin\.ee|^tel:/.test(h)) {
+    fbq('track', 'Contact', { content_name: h.indexOf('lin.ee') > -1 ? 'LINE' : h.indexOf('wa.me') > -1 ? 'WhatsApp' : 'Phone' });
+  }
+  if (/calendly\.com/.test(h)) { fbq('trackCustom', 'BookCallClick'); }
+});
 </script>
 
 </body>
