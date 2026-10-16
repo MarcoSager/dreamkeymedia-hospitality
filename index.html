@@ -76,6 +76,9 @@ fbq('track', 'PageView');
     transition: background-color 5000s ease-in-out 0s;
     box-shadow: 0 0 0px 1000px transparent inset;
   }
+  /* Guard against 3rd-party widgets (Turnstile, etc.) forcing horizontal scroll on mobile */
+  iframe { max-width: 100%; }
+  .cf-turnstile iframe { width: 100% !important; }
 </style>
 </head>
 <body class="min-h-screen bg-primary text-white overflow-x-hidden">
@@ -226,8 +229,8 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
             </div>
           </div>
 
-          <div class="flex justify-center">
-            <div class="cf-turnstile w-full max-w-[300px]" data-sitekey="0x4AAAAAADo3tqm3D9EMJykC" data-theme="dark" data-size="flexible"></div>
+          <div class="flex justify-center w-full">
+            <div class="cf-turnstile w-full max-w-[300px] min-w-0 overflow-hidden" data-sitekey="0x4AAAAAADo3tqm3D9EMJykC" data-theme="dark" data-size="flexible"></div>
           </div>
 
           <div class="flex flex-col sm:flex-row gap-3 pt-2">
