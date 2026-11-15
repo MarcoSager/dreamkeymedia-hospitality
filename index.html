@@ -792,7 +792,29 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
     document.addEventListener('click', retryOnGesture, { once: true });
   });
 
-  // Form submit -> WhatsApp (primary) + Formspree email copy (once endpoint is set)
+  // Capture UTM params + fbclid on load so they survive through to form submit
+  (function () {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'].forEach(function (k) {
+        const v = params.get(k);
+        if (v) sessionStorage.setItem(k, v);
+      });
+    } catch (e) {}
+  })();
+
+  function getStoredUtm() {
+    const out = {};
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+      try { const v = sessionStorage.getItem(k); if (v) out[k] = v; } catch (e) {}
+    });
+    return out;
+  }
+  function getStoredFbclid() {
+    try { return sessionStorage.getItem('fbclid') || ''; } catch (e) { return ''; }
+  }
+
+  // Form submit -> GHL lead capture, then WhatsApp (primary) + Formspree email copy
   const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xojzgbaa';
   document.getElementById('apply-form').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -804,7 +826,11 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
       return;
     }
 
-    if (typeof fbq === 'function') { fbq('track', 'Lead', { content_name: fd.get('interest') || '' }); }
+    const utm = getStoredUtm();
+    const fbclid = getStoredFbclid();
+    const sourceLine = utm.utm_source
+      ? 'Source: ' + utm.utm_source + (utm.utm_campaign ? ' / ' + utm.utm_campaign : '')
+      : 'Source: Direct';
 
     const summary =
       'New Apply Today lead:\n' +
@@ -813,7 +839,33 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
       '\nEmail: ' + fd.get('email') +
       '\nPhone: ' + fd.get('phone') +
       '\nInterested In: ' + (fd.get('interest') || '') +
-      '\nWhen To Start: ' + (fd.get('start') || '');
+      '\nWhen To Start: ' + (fd.get('start') || '') +
+      '\n' + sourceLine;
+
+    // Send to GHL; fire the Lead pixel only once the API confirms the contact was saved.
+    // Never blocks or gates WhatsApp/Formspree below — a lead is never lost if this fails.
+    fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: fd.get('name') || '',
+        business: fd.get('business') || '',
+        email: fd.get('email') || '',
+        phone: fd.get('phone') || '',
+        interest: fd.get('interest') || '',
+        start: fd.get('start') || '',
+        turnstileToken: fd.get('cf-turnstile-response') || '',
+        utm: utm,
+        fbclid: fbclid,
+      }),
+    })
+      .then(function (r) { return r.ok ? r.json() : { ok: false }; })
+      .catch(function () { return { ok: false }; })
+      .then(function (result) {
+        if (result && result.ok && typeof fbq === 'function') {
+          fbq('track', 'Lead', { content_name: fd.get('interest') || '' });
+        }
+      });
 
     window.open('https://wa.me/66970752722?text=' + encodeURIComponent(summary), '_blank');
 
