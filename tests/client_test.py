@@ -128,13 +128,13 @@ with sync_playwright() as p:
 
     # T6: existing Contact / BookCallClick events still fire
     ctx = browser.new_context(); page = ctx.new_page(); setup(page, "ok")
-    page.route("**/wa.me/**", lambda r: r.abort()); page.route("**/calendly.com/**", lambda r: r.abort())
+    page.route("**/wa.me/**", lambda r: r.abort()); page.route("**/link.dreamkeymedia.net/widget/booking/**", lambda r: r.abort())
     page.goto(BASE + "/")
     page.evaluate("""() => {
       document.querySelector('a[href*="wa.me"]').addEventListener('click', e => e.preventDefault());
-      document.querySelector('a[href*="calendly.com"]').addEventListener('click', e => e.preventDefault());
+      document.querySelector('a[href*="/widget/booking/"]').addEventListener('click', e => e.preventDefault());
       document.querySelector('a[href*="wa.me"]').click();
-      document.querySelector('a[href*="calendly.com"]').click();
+      document.querySelector('a[href*="/widget/booking/"]').click();
     }""")
     ev = page.evaluate("window.__fbq")
     check("T6 Contact + BookCallClick still fire",
