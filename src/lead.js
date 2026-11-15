@@ -1,4 +1,4 @@
-// Cloudflare Pages Function: POST /api/lead
+// POST /api/lead handler, shared by the Worker entry (src/worker.js) and the Node tests.
 //
 // 1. Verifies the Turnstile token server-side.
 // 2. Validates and trims input.
@@ -75,7 +75,7 @@ async function verifyTurnstile(token, secret, ip) {
   }
 }
 
-export async function onRequestPost({ request, env }) {
+export async function handleLead(request, env) {
   if (!env.TURNSTILE_SECRET || !env.GHL_TOKEN) return fail('missing_env', 500);
 
   let raw;
@@ -201,7 +201,7 @@ export async function onRequestPost({ request, env }) {
   }
 }
 
-export function onRequest() {
+export function methodNotAllowed() {
   return new Response(JSON.stringify({ ok: false, error: 'Method not allowed' }), {
     status: 405,
     headers: { 'Content-Type': 'application/json', Allow: 'POST' },
