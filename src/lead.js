@@ -53,6 +53,18 @@ function fail(code, status, detail) {
   return json({ ok: false, error: 'Could not save your details right now.' }, status);
 }
 
+// Short, single-line validation message from a GHL error response, for logs.
+// GHL error bodies carry field names, never our credentials.
+async function ghlMessage(res) {
+  try {
+    const data = await res.clone().json();
+    const msg = Array.isArray(data.message) ? data.message.join('; ') : data.message || data.error || '';
+    return String(msg).replace(/\s+/g, ' ').slice(0, 160);
+  } catch {
+    return '';
+  }
+}
+
 // Normalise a phone number to E.164 where the intent is unambiguous.
 // Thai local numbers: 0 + 9 digits (mobile 06/08/09) or 0 + 8 digits
 // (landline 02-07) become +66 without the leading 0. Anything we cannot
@@ -206,16 +218,21 @@ export async function handleLead(request, env) {
     if (!noteRes.ok) logError('note', noteRes.status);
 
     // 4. Skip the deal if this contact already has an open one in the pipeline.
-    const search = new URLSearchParams({
-      locationId: LOCATION_ID,
-      contactId,
-      pipelineId: PIPELINE_ID,
-      status: 'open',
-      limit: '20',
+    //    GHL documents snake_case query params for this endpoint; camelCase
+    //    is tried only if GHL rejects the first form with a 422.
+    const searchHeaders = { Authorization: headers.Authorization, Version: GHL_VERSION, Accept: 'application/json' };
+    const searchFor = (p) => fetch(`${GHL_BASE}/opportunities/search?${new URLSearchParams(p)}`, { headers: searchHeaders });
+    let searchRes = await searchFor({
+      location_id: LOCATION_ID, contact_id: contactId, pipeline_id: PIPELINE_ID, status: 'open', limit: '20',
     });
-    const searchRes = await fetch(`${GHL_BASE}/opportunities/search?${search}`, { headers });
+    if (searchRes.status === 422) {
+      logError('deal', `search_422_snake ${await ghlMessage(searchRes)}`);
+      searchRes = await searchFor({
+        locationId: LOCATION_ID, contactId, pipelineId: PIPELINE_ID, status: 'open', limit: '20',
+      });
+    }
     if (!searchRes.ok) {
-      logError('deal', `search_${searchRes.status}`);
+      logError('deal', `search_${searchRes.status} ${await ghlMessage(searchRes)}`);
       return json({ ok: true });
     }
     const searchData = await searchRes.json();
@@ -236,7 +253,7 @@ export async function handleLead(request, env) {
           contactId,
         }),
       });
-      if (!oppRes.ok) logError('deal', oppRes.status);
+      if (!oppRes.ok) logError('deal', `${oppRes.status} ${await ghlMessage(oppRes)}`);
     }
 
   } catch {

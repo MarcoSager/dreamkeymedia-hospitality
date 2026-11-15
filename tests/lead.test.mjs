@@ -151,7 +151,13 @@ async function mocked(status = {}, body = VALID) {
     if (url.endsWith('/contacts/upsert')) return reply(status.upsert || 200, { contact: { id: 'c1' } });
     if (url.endsWith('/tags')) return reply(status.tags || 201, {});
     if (url.endsWith('/notes')) return reply(status.note || 201, {});
-    if (url.includes('/opportunities/search')) return reply(status.search || 200, { opportunities: status.openDeal ? [{ contactId: 'c1', pipelineId: 'Dmp6dkA6P8s4O2ADDCZh', status: 'open' }] : [] });
+    if (url.includes('/opportunities/search')) {
+      // Real GHL rejected camelCase params with 422; mock accepts the style in status.acceptStyle.
+      const snake = url.includes('location_id=');
+      const style = status.acceptStyle || 'snake';
+      if (style === 'none' || (style === 'snake') !== snake) return reply(422, { statusCode: 422, message: ['property locationId should not exist'] });
+      return reply(status.search || 200, { opportunities: status.openDeal ? [{ contactId: 'c1', pipelineId: 'Dmp6dkA6P8s4O2ADDCZh', status: 'open' }] : [] });
+    }
     if (url.endsWith('/opportunities/') && method === 'POST') return reply(status.deal || 201, {});
     throw new Error(`unexpected fetch ${url}`);
   };
@@ -178,13 +184,13 @@ test('contact saved but deal creation fails -> 200 ok:true and logs lead_error d
   const r = await mocked({ deal: 500 });
   assert.equal(r.status, 200);
   assert.equal(r.json.ok, true);
-  assert.ok(r.logs.includes('lead_error deal 500'), `logs: ${r.logs}`);
+  assert.ok(r.logs.some((l) => l.startsWith('lead_error deal 500')), `logs: ${r.logs}`);
   assert.ok(!r.logs.join('\n').includes('mock-token-do-not-log'));
 });
 test('contact saved but deal search fails -> ok:true and logs lead_error deal', async () => {
   const r = await mocked({ search: 503 });
   assert.equal(r.json.ok, true);
-  assert.ok(r.logs.includes('lead_error deal search_503'), `logs: ${r.logs}`);
+  assert.ok(r.logs.some((l) => l.startsWith('lead_error deal search_503')), `logs: ${r.logs}`);
 });
 test('GHL contact fails -> 502 ok:false, logs lead_error contact, no deal attempted', async () => {
   const r = await mocked({ upsert: 422 });
@@ -197,4 +203,26 @@ test('local Thai phone is sent to GHL as E.164', async () => {
   const r = await mocked({}, { ...VALID, phone: '097-075-2722' });
   const upsert = r.calls.find((c) => c.url.endsWith('/contacts/upsert'));
   assert.equal(upsert.body.phone, '+66970752722');
+});
+
+test('deal search uses snake_case params first (GHL 422s on camelCase)', async () => {
+  const r = await mocked();
+  const searches = r.calls.filter((c) => c.url.includes('/opportunities/search'));
+  assert.equal(searches.length, 1);
+  assert.ok(searches[0].url.includes('location_id=5YD1qlsIQsyJOs1mZZtt') && searches[0].url.includes('contact_id=c1') && searches[0].url.includes('pipeline_id='));
+  assert.equal(r.calls.filter((c) => c.url.endsWith('/opportunities/') && c.method === 'POST').length, 1);
+});
+test('deal search falls back to camelCase when snake_case gets 422, still creates deal', async () => {
+  const r = await mocked({ acceptStyle: 'camel' });
+  assert.equal(r.json.ok, true);
+  assert.equal(r.calls.filter((c) => c.url.includes('/opportunities/search')).length, 2);
+  assert.equal(r.calls.filter((c) => c.url.endsWith('/opportunities/') && c.method === 'POST').length, 1);
+  assert.ok(r.logs.some((l) => l.startsWith('lead_error deal search_422_snake property locationId')), `logs: ${r.logs}`);
+});
+test('deal search 422 on both styles -> ok:true, no deal, GHL message logged', async () => {
+  const r = await mocked({ acceptStyle: 'none' });
+  assert.equal(r.json.ok, true);
+  assert.equal(r.calls.filter((c) => c.url.endsWith('/opportunities/') && c.method === 'POST').length, 0);
+  assert.ok(r.logs.some((l) => l.startsWith('lead_error deal search_422 property')), `logs: ${r.logs}`);
+  assert.ok(!r.logs.join('\n').includes('mock-token-do-not-log'));
 });
