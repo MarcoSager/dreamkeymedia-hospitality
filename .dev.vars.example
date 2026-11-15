@@ -1,0 +1,5 @@
+# Copy this file to .dev.vars (gitignored) and fill in real values for local
+# testing with `wrangler pages dev`. Never commit real secrets.
+
+TURNSTILE_SECRET=your-turnstile-secret-key
+GHL_TOKEN=your-ghl-private-integration-token

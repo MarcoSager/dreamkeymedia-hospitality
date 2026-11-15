@@ -1,0 +1,14 @@
+# Files in the repo root that must never be served as public assets
+# (assets.directory is "." so everything else is published).
+.git
+.gitignore
+.DS_Store
+.wrangler
+.dev.vars*
+.env*
+wrangler.jsonc
+src/
+tests/
+node_modules/
+package.json
+package-lock.json
