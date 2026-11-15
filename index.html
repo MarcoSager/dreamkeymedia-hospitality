@@ -792,32 +792,62 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
     document.addEventListener('click', retryOnGesture, { once: true });
   });
 
-  // Capture UTM params + fbclid on load so they survive through to form submit
+  // ── Lead capture helpers (shared by the apply form and the chat flow) ──
+  const SOURCE_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'];
+  const WHATSAPP_NUMBER = '66970752722';
+
+  // First touch wins: only store a param if this session hasn't stored it yet.
   (function () {
     try {
       const params = new URLSearchParams(window.location.search);
-      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'].forEach(function (k) {
+      SOURCE_KEYS.forEach(function (k) {
         const v = params.get(k);
-        if (v) sessionStorage.setItem(k, v);
+        if (v && !sessionStorage.getItem(k)) sessionStorage.setItem(k, v.slice(0, 500));
       });
     } catch (e) {}
   })();
 
-  function getStoredUtm() {
+  function getSourceData() {
     const out = {};
-    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'].forEach(function (k) {
+    SOURCE_KEYS.forEach(function (k) {
       try { const v = sessionStorage.getItem(k); if (v) out[k] = v; } catch (e) {}
     });
     return out;
   }
-  function getStoredFbclid() {
-    try { return sessionStorage.getItem('fbclid') || ''; } catch (e) { return ''; }
+
+  function buildSourceLabel(data) {
+    return 'Source: ' + (data.utm_campaign || data.utm_source || 'direct');
   }
 
-  // Form submit -> GHL lead capture, then WhatsApp (primary) + Formspree email copy
+  function openWhatsApp(text) {
+    return window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(text), '_blank');
+  }
+
+  // POSTs a lead to /api/lead. Resolves true only when the API confirms the
+  // contact was saved; fires the Lead pixel in that case. Never rejects.
+  function submitLead(fields, pixelContentName) {
+    const payload = Object.assign({}, getSourceData(), fields);
+    return fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    })
+      .then(function (r) { return r.json().catch(function () { return { ok: false }; }); })
+      .catch(function () { return { ok: false }; })
+      .then(function (result) {
+        const ok = !!(result && result.ok === true);
+        if (ok && typeof fbq === 'function') fbq('track', 'Lead', { content_name: pixelContentName || '' });
+        return ok;
+      });
+  }
+
+  // ── Apply form: GHL capture, then WhatsApp (primary) + Formspree email copy ──
   const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xojzgbaa';
+  let applySubmitting = false;
   document.getElementById('apply-form').addEventListener('submit', function (e) {
     e.preventDefault();
+    if (applySubmitting) return;
     const form = e.target;
     const fd = new FormData(form);
 
@@ -826,12 +856,11 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
       return;
     }
 
-    const utm = getStoredUtm();
-    const fbclid = getStoredFbclid();
-    const sourceLine = utm.utm_source
-      ? 'Source: ' + utm.utm_source + (utm.utm_campaign ? ' / ' + utm.utm_campaign : '')
-      : 'Source: Direct';
+    applySubmitting = true;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.setAttribute('aria-busy', 'true'); }
 
+    const sourceData = getSourceData();
     const summary =
       'New Apply Today lead:\n' +
       'Name: ' + fd.get('name') +
@@ -840,44 +869,39 @@ src="https://www.facebook.com/tr?id=2090897571491365&ev=PageView&noscript=1"
       '\nPhone: ' + fd.get('phone') +
       '\nInterested In: ' + (fd.get('interest') || '') +
       '\nWhen To Start: ' + (fd.get('start') || '') +
-      '\n' + sourceLine;
+      '\n' + buildSourceLabel(sourceData);
 
-    // Send to GHL; fire the Lead pixel only once the API confirms the contact was saved.
-    // Never blocks or gates WhatsApp/Formspree below — a lead is never lost if this fails.
-    fetch('/api/lead', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: fd.get('name') || '',
-        business: fd.get('business') || '',
-        email: fd.get('email') || '',
-        phone: fd.get('phone') || '',
-        interest: fd.get('interest') || '',
-        start: fd.get('start') || '',
-        turnstileToken: fd.get('cf-turnstile-response') || '',
-        utm: utm,
-        fbclid: fbclid,
-      }),
-    })
-      .then(function (r) { return r.ok ? r.json() : { ok: false }; })
-      .catch(function () { return { ok: false }; })
-      .then(function (result) {
-        if (result && result.ok && typeof fbq === 'function') {
-          fbq('track', 'Lead', { content_name: fd.get('interest') || '' });
-        }
-      });
+    // Fire-and-forget: the Lead pixel fires inside submitLead only on ok:true.
+    // WhatsApp and Formspree below never wait on it, so a GHL failure can't lose the lead.
+    submitLead({
+      name: fd.get('name') || '',
+      business: fd.get('business') || '',
+      email: fd.get('email') || '',
+      phone: fd.get('phone') || '',
+      interest: fd.get('interest') || '',
+      start: fd.get('start') || '',
+      source: 'form',
+      message_channel: 'whatsapp',
+      'cf-turnstile-response': fd.get('cf-turnstile-response') || '',
+    }, fd.get('interest') || '');
 
-    window.open('https://wa.me/66970752722?text=' + encodeURIComponent(summary), '_blank');
+    // Must stay synchronous inside the submit handler or mobile browsers block the popup.
+    openWhatsApp(summary);
 
     if (FORMSPREE_ENDPOINT) {
       fetch(FORMSPREE_ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: fd }).catch(() => {});
     }
 
-    form.innerHTML =
-      '<div class="text-center py-10">' +
-      '<h3 class="text-2xl font-black uppercase text-white mb-3">Thanks, ' + (fd.get('name') || '') + '!</h3>' +
-      '<p class="text-[#8A99BB] text-sm">We just opened WhatsApp with your details. Hit send there and we\'ll reply within 24 hours.</p>' +
-      '</div>';
+    const thanks = document.createElement('div');
+    thanks.className = 'text-center py-10';
+    const heading = document.createElement('h3');
+    heading.className = 'text-2xl font-black uppercase text-white mb-3';
+    heading.textContent = 'Thanks, ' + (fd.get('name') || '') + '!';
+    const note = document.createElement('p');
+    note.className = 'text-[#8A99BB] text-sm';
+    note.textContent = "We just opened WhatsApp with your details. Hit send there and we'll reply within 24 hours.";
+    thanks.append(heading, note);
+    form.replaceChildren(thanks);
   });
 </script>
 
