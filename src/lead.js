@@ -7,8 +7,12 @@
 // 4. Creates a "New Lead" opportunity unless the contact already has an
 //    open one in the pipeline.
 //
-// Returns { ok: true } once the contact is saved in GHL. Never echoes
-// upstream errors, tokens or stack traces; logs only short error codes.
+// Returns { ok: true } once the contact is saved in GHL, even if the deal
+// step fails afterwards (the lead is already captured). Never echoes upstream
+// errors, tokens or stack traces. Every failure logs one line:
+//   lead_error <code> [detail]
+// codes: missing_secret, bad_json, turnstile_rejected, invalid_input,
+//        contact (fatal, 502), tags, note, deal (non-fatal, still ok:true)
 
 const GHL_BASE = 'https://services.leadconnectorhq.com';
 const GHL_VERSION = '2021-07-28';
@@ -39,9 +43,37 @@ function json(data, status = 200) {
   });
 }
 
-function fail(code, status) {
-  console.log('lead_error', code);
+function logError(code, detail) {
+  if (detail === undefined) console.log('lead_error', code);
+  else console.log('lead_error', code, String(detail));
+}
+
+function fail(code, status, detail) {
+  logError(code, detail);
   return json({ ok: false, error: 'Could not save your details right now.' }, status);
+}
+
+// Normalise a phone number to E.164 where the intent is unambiguous.
+// Thai local numbers: 0 + 9 digits (mobile 06/08/09) or 0 + 8 digits
+// (landline 02-07) become +66 without the leading 0. Anything we cannot
+// read with confidence is returned exactly as typed (trimmed).
+export function normalizePhone(input) {
+  const typed = typeof input === 'string' ? input.trim() : '';
+  if (!typed) return '';
+  const hasPlus = typed.startsWith('+');
+  const digits = typed.replace(/[\s\-().]/g, '').replace(/^\+/, '');
+  if (!/^[0-9]+$/.test(digits)) return typed;
+  const thaiNational = /^(?:[689][0-9]{8}|[2-7][0-9]{7})$/;
+
+  if (hasPlus) {
+    // "+66 0812345678": drop the trunk 0 people often keep after +66.
+    if (/^660/.test(digits) && thaiNational.test(digits.slice(3))) return `+66${digits.slice(3)}`;
+    if (/^[1-9][0-9]{7,14}$/.test(digits)) return `+${digits}`;
+    return typed;
+  }
+  if (/^0/.test(digits) && thaiNational.test(digits.slice(1))) return `+66${digits.slice(1)}`;
+  if (/^66/.test(digits) && thaiNational.test(digits.slice(2))) return `+${digits}`;
+  return typed;
 }
 
 function clean(value, max) {
@@ -76,7 +108,10 @@ async function verifyTurnstile(token, secret, ip) {
 }
 
 export async function handleLead(request, env) {
-  if (!env.TURNSTILE_SECRET || !env.GHL_TOKEN) return fail('missing_env', 500);
+  if (!env.TURNSTILE_SECRET || !env.GHL_TOKEN) {
+    const missing = [!env.TURNSTILE_SECRET && 'TURNSTILE_SECRET', !env.GHL_TOKEN && 'GHL_TOKEN'].filter(Boolean);
+    return fail('missing_secret', 500, missing.join(','));
+  }
 
   let raw;
   try {
@@ -89,7 +124,7 @@ export async function handleLead(request, env) {
   const ip = request.headers.get('CF-Connecting-IP') || '';
   const turnstileOk = await verifyTurnstile(clean(raw['cf-turnstile-response'], 2048), env.TURNSTILE_SECRET, ip);
   if (!turnstileOk) {
-    console.log('lead_error', 'turnstile_invalid');
+    logError('turnstile_rejected');
     return json({ ok: false, error: 'Security check failed. Please try again.' }, 400);
   }
 
@@ -107,15 +142,16 @@ export async function handleLead(request, env) {
   for (const k of UTM_KEYS) lead[k] = clean(raw[k], LIMITS.utm);
 
   if (lead.email && !EMAIL_RE.test(lead.email)) lead.email = '';
-  if (lead.phone && !PHONE_RE.test(lead.phone)) lead.phone = '';
+  lead.phone = lead.phone && PHONE_RE.test(lead.phone) ? normalizePhone(lead.phone) : '';
   if (!lead.name || (!lead.email && !lead.phone)) {
-    console.log('lead_error', 'invalid_input');
+    logError('invalid_input');
     return json({ ok: false, error: 'Please add your name and a phone number or email.' }, 400);
   }
 
   const headers = ghlHeaders(env.GHL_TOKEN);
   const nameParts = lead.name.split(/\s+/);
 
+  let contactId;
   try {
     // 1. Upsert contact. Tags are added separately below because the upsert
     //    "tags" field would overwrite any tags the contact already has.
@@ -133,11 +169,16 @@ export async function handleLead(request, env) {
         source: 'Landing page',
       }),
     });
-    if (!upsertRes.ok) return fail(`ghl_upsert_${upsertRes.status}`, 502);
+    if (!upsertRes.ok) return fail('contact', 502, upsertRes.status);
     const upsertData = await upsertRes.json();
-    const contactId = upsertData && upsertData.contact && upsertData.contact.id;
-    if (!contactId) return fail('ghl_upsert_no_id', 502);
+    contactId = upsertData && upsertData.contact && upsertData.contact.id;
+    if (!contactId) return fail('contact', 502, 'no_id');
+  } catch {
+    return fail('contact', 502, 'exception');
+  }
 
+  // The contact is saved from here on: later failures are logged, never shown.
+  try {
     // 2. Append tags (non-fatal).
     const tags = ['source-landing-page'];
     if (lead.source === 'chat') tags.push('source-landing-chat');
@@ -146,7 +187,7 @@ export async function handleLead(request, env) {
       headers,
       body: JSON.stringify({ tags }),
     });
-    if (!tagRes.ok) console.log('lead_error', `ghl_tags_${tagRes.status}`);
+    if (!tagRes.ok) logError('tags', tagRes.status);
 
     // 3. Note with interest, timing and attribution (non-fatal).
     const noteLines = [
@@ -162,7 +203,7 @@ export async function handleLead(request, env) {
       headers,
       body: JSON.stringify({ body: noteLines.join('\n') }),
     });
-    if (!noteRes.ok) console.log('lead_error', `ghl_note_${noteRes.status}`);
+    if (!noteRes.ok) logError('note', noteRes.status);
 
     // 4. Skip the deal if this contact already has an open one in the pipeline.
     const search = new URLSearchParams({
@@ -173,7 +214,10 @@ export async function handleLead(request, env) {
       limit: '20',
     });
     const searchRes = await fetch(`${GHL_BASE}/opportunities/search?${search}`, { headers });
-    if (!searchRes.ok) return fail(`ghl_search_${searchRes.status}`, 502);
+    if (!searchRes.ok) {
+      logError('deal', `search_${searchRes.status}`);
+      return json({ ok: true });
+    }
     const searchData = await searchRes.json();
     const hasOpenDeal = (searchData.opportunities || []).some(
       (o) => o.contactId === contactId && o.pipelineId === PIPELINE_ID && o.status === 'open'
@@ -192,13 +236,13 @@ export async function handleLead(request, env) {
           contactId,
         }),
       });
-      if (!oppRes.ok) return fail(`ghl_opportunity_${oppRes.status}`, 502);
+      if (!oppRes.ok) logError('deal', oppRes.status);
     }
 
-    return json({ ok: true });
   } catch {
-    return fail('exception', 502);
+    logError('deal', 'exception');
   }
+  return json({ ok: true });
 }
 
 export function methodNotAllowed() {

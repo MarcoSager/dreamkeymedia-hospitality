@@ -1,10 +1,11 @@
-// Run: node --test tests/
+// Run: node --test tests/lead.test.mjs
 // Needs network: Turnstile checks hit Cloudflare's siteverify with Cloudflare's
 // published dummy secrets, and the GHL failure case hits the real GHL API with
 // an invalid token. No real secrets and no real leads are used.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import worker from '../src/worker.js';
+import { normalizePhone } from '../src/lead.js';
 
 const PASS_TS = '1x0000000000000000000000000000000AA'; // Cloudflare dummy: always passes
 const FAIL_TS = '2x0000000000000000000000000000000AA'; // Cloudflare dummy: always fails
@@ -97,9 +98,103 @@ test('GHL failure -> 502 generic message, token never logged or returned', async
   assert.equal(result.json.error, 'Could not save your details right now.');
   assert.ok(!result.text.includes(BAD_GHL));
   assert.ok(!logs.join('\n').includes(BAD_GHL));
-  assert.ok(logs.includes('lead_error ghl_upsert_401'), `logs: ${logs}`);
+  assert.ok(logs.includes('lead_error contact 401'), `logs: ${logs}`);
 });
-test('missing env vars -> 500', async () => {
-  const r = await call('POST', '/api/lead', VALID, env('', ''));
-  assert.equal(r.status, 500);
+test('missing secrets -> 500 and logs lead_error missing_secret with names only', async () => {
+  const { result, logs } = await spy(() => call('POST', '/api/lead', VALID, env('', '')));
+  assert.equal(result.status, 500);
+  assert.ok(logs.includes('lead_error missing_secret TURNSTILE_SECRET,GHL_TOKEN'), `logs: ${logs}`);
+  const half = await spy(() => call('POST', '/api/lead', VALID, env(PASS_TS, '')));
+  assert.ok(half.logs.includes('lead_error missing_secret GHL_TOKEN'), `logs: ${half.logs}`);
+});
+test('Turnstile rejected -> logs lead_error turnstile_rejected', async () => {
+  const { logs } = await spy(() => call('POST', '/api/lead', VALID, env(FAIL_TS, BAD_GHL)));
+  assert.ok(logs.includes('lead_error turnstile_rejected'), `logs: ${logs}`);
+});
+
+// ── Phone normalisation (E.164) ──
+for (const [input, expected] of [
+  ['0970752722', '+66970752722'],          // Thai mobile, local format
+  ['097-075-2722', '+66970752722'],        // with dashes
+  ['097 075 2722', '+66970752722'],        // with spaces
+  ['081 234 5678', '+66812345678'],
+  ['061-234-5678', '+66612345678'],
+  ['02 123 4567', '+6621234567'],          // Bangkok landline
+  ['(053) 123-456', '+6653123456'],        // Chiang Mai landline
+  ['+66970752722', '+66970752722'],        // already E.164
+  ['+66 97 075 2722', '+66970752722'],
+  ['+66 0970752722', '+66970752722'],      // trunk 0 kept after +66
+  ['66970752722', '+66970752722'],         // country code without +
+  ['+44 20 7946 0958', '+442079460958'],   // foreign, explicit +
+  ['+1 (415) 555-0100', '+14155550100'],
+  ['0012025550100', '0012025550100'],      // intl dial prefix: ambiguous, as typed
+  ['097075272', '097075272'],              // mobile prefix, 1 digit short: as typed
+  ['4155550100', '4155550100'],            // no country code: as typed
+  ['  0970752722  ', '+66970752722'],
+]) {
+  test(`normalizePhone(${JSON.stringify(input)}) -> ${expected}`, () => {
+    assert.equal(normalizePhone(input), expected);
+  });
+}
+
+// ── Mocked GHL: deal and contact failure paths (no network) ──
+// Fakes siteverify and every GHL endpoint. `status` overrides per step.
+async function mocked(status = {}, body = VALID) {
+  const calls = []; const logs = [];
+  const realFetch = globalThis.fetch; const realLog = console.log;
+  const reply = (code, data) => new Response(JSON.stringify(data), { status: code, headers: { 'Content-Type': 'application/json' } });
+  globalThis.fetch = async (input, init = {}) => {
+    const url = String(input.url || input);
+    const method = init.method || 'GET';
+    calls.push({ url, method, body: init.body && typeof init.body === 'string' ? JSON.parse(init.body) : null });
+    if (url.includes('siteverify')) return reply(200, { success: true });
+    if (url.endsWith('/contacts/upsert')) return reply(status.upsert || 200, { contact: { id: 'c1' } });
+    if (url.endsWith('/tags')) return reply(status.tags || 201, {});
+    if (url.endsWith('/notes')) return reply(status.note || 201, {});
+    if (url.includes('/opportunities/search')) return reply(status.search || 200, { opportunities: status.openDeal ? [{ contactId: 'c1', pipelineId: 'Dmp6dkA6P8s4O2ADDCZh', status: 'open' }] : [] });
+    if (url.endsWith('/opportunities/') && method === 'POST') return reply(status.deal || 201, {});
+    throw new Error(`unexpected fetch ${url}`);
+  };
+  console.log = (...a) => logs.push(a.join(' '));
+  try {
+    const res = await worker.fetch(req('POST', '/api/lead', body), env(PASS_TS, 'mock-token-do-not-log'));
+    return { status: res.status, json: await res.json(), calls, logs };
+  } finally { globalThis.fetch = realFetch; console.log = realLog; }
+}
+
+test('happy path -> ok:true, one deal created, no errors logged', async () => {
+  const r = await mocked();
+  assert.equal(r.status, 200);
+  assert.equal(r.json.ok, true);
+  assert.equal(r.calls.filter((c) => c.url.endsWith('/opportunities/') && c.method === 'POST').length, 1);
+  assert.deepEqual(r.logs, []);
+});
+test('existing open deal -> ok:true, no new deal', async () => {
+  const r = await mocked({ openDeal: true });
+  assert.equal(r.json.ok, true);
+  assert.equal(r.calls.filter((c) => c.url.endsWith('/opportunities/') && c.method === 'POST').length, 0);
+});
+test('contact saved but deal creation fails -> 200 ok:true and logs lead_error deal', async () => {
+  const r = await mocked({ deal: 500 });
+  assert.equal(r.status, 200);
+  assert.equal(r.json.ok, true);
+  assert.ok(r.logs.includes('lead_error deal 500'), `logs: ${r.logs}`);
+  assert.ok(!r.logs.join('\n').includes('mock-token-do-not-log'));
+});
+test('contact saved but deal search fails -> ok:true and logs lead_error deal', async () => {
+  const r = await mocked({ search: 503 });
+  assert.equal(r.json.ok, true);
+  assert.ok(r.logs.includes('lead_error deal search_503'), `logs: ${r.logs}`);
+});
+test('GHL contact fails -> 502 ok:false, logs lead_error contact, no deal attempted', async () => {
+  const r = await mocked({ upsert: 422 });
+  assert.equal(r.status, 502);
+  assert.equal(r.json.ok, false);
+  assert.ok(r.logs.includes('lead_error contact 422'), `logs: ${r.logs}`);
+  assert.ok(!r.calls.some((c) => c.url.includes('/opportunities')));
+});
+test('local Thai phone is sent to GHL as E.164', async () => {
+  const r = await mocked({}, { ...VALID, phone: '097-075-2722' });
+  const upsert = r.calls.find((c) => c.url.endsWith('/contacts/upsert'));
+  assert.equal(upsert.body.phone, '+66970752722');
 });
